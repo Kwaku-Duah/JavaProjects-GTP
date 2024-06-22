@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.fx.LibraryManagementController">
+    <top>
+        <HBox spacing="10" padding="10">
+            <Button text="Add Book" onAction="#handleAddBook"/>
+            <Button text="Update Book" onAction="#handleUpdateBook"/>
+            <Button text="Delete Book" onAction="#handleDeleteBook"/>
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="bookTableView">
+            <columns>
+                <TableColumn text="ID" fx:id="idColumn"/>
+                <TableColumn text="Title" fx:id="titleColumn"/>
+                <TableColumn text="Author" fx:id="authorColumn"/>
+                <TableColumn text="ISBN" fx:id="isbnColumn"/>
+                <TableColumn text="Available" fx:id="availableColumn"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
