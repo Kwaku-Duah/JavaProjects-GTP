@@ -10,9 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PatronDAOImpl implements PatronDAO {
-
-    // Use LinkedList for managing patrons
     private LinkedList<Patron> patronsLinkedList;
+    // Use LinkedList for managing patrons
+
 
     public PatronDAOImpl() {
         this.patronsLinkedList = new LinkedList<>(); 
