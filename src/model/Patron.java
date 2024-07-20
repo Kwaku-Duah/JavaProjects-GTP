@@ -1,16 +1,16 @@
 package model;
 
+import java.util.Queue;
 import java.util.Stack;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class Patron {
     private int id;
     private String name;
     private String email;
     private String phone;
-    private Stack<String> recentActivities; // Stack to track recent activities
-    private Queue<String> bookRequests; // Queue to manage book requests
+    private Stack<String> recentActivities; 
+    private Queue<String> bookRequests; 
 
     public Patron(int id, String name, String email, String phone) {
         this.id = id;
@@ -50,7 +50,7 @@ public class Patron {
         return phone;
     }
 
-    public void setPhoneNumber(String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -78,5 +78,16 @@ public class Patron {
 
     public Queue<String> getBookRequests() {
         return bookRequests;
+    }
+
+    // Method overriding for polymorphism
+    @Override
+    public String toString() {
+        return "Patron{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

@@ -29,7 +29,7 @@ public class BookDAOImpl implements BookDAO {
      */
     @Override
     public List<Book> getAllBooks() {
-        booksLinkedList.clear(); // Clear existing data
+        booksLinkedList.clear(); 
         try (Connection conn = DatabaseManager.getConnection()) {
             String query = "SELECT * FROM Book";
             try (PreparedStatement stmt = conn.prepareStatement(query);
