@@ -1,16 +1,12 @@
 {
-  "java.project.sourcePaths": ["src"],
+  "java.project.sourcePaths": [
+    "src",
+    "test"
+  ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
-    "lib/**/*.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.controls.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.fxml.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.media.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.web.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx-swt.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.base.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.graphics.jar",
-    "/home/kduah/Downloads/Programs/javafx-sdk-22.0.1/lib/javafx.swing.jar"
+    "/home/kduah/Desktop/libraryManagement/libraryManagement/lib/*.jar"
   ],
-  "CodeGPT.apiKey": "Ollama"
+  "CodeGPT.apiKey": "Ollama",
+  "java.format.settings.url": ".vscode/java-formatter.xml"
 }
