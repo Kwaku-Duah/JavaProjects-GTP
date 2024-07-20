@@ -61,7 +61,7 @@ public class Mainframe extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
+         
 
                 tfFirstName.setText("");
                 tfLastName.setText("");

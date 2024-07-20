@@ -2,12 +2,14 @@ package model;
 
 import java.time.LocalDate;
 
+
 public class Transaction {
     private int id;
     private int bookId;
     private int patronId;
     private LocalDate issueDate;
     private LocalDate returnDate;
+
 
     public Transaction(int id, int bookId, int patronId, LocalDate issueDate, LocalDate returnDate) {
         this.id = id;
