@@ -30,14 +30,10 @@ public class Controller {
     @FXML
     private TableColumn&lt;Book, Boolean&gt; availableColumn;
 
-    @FXML
-    private TextField titleField;
-    @FXML
-    private TextField authorField;
-    @FXML
-    private TextField isbnField;
-    @FXML
-    private TextField searchField;
+    @FXML TextField titleField;
+    @FXML TextField authorField;
+    @FXML TextField isbnField;
+    @FXML TextField searchField;
     @FXML
     private Button addButton;
     @FXML
@@ -47,123 +43,121 @@ public class Controller {
     @FXML
     private Button deleteButton;
 
-    private BookDAO bookDAO;
+    BookDAO bookDAO;
 
-<span class="nc" id="L52">    public Controller() {</span>
-<span class="nc" id="L53">        this.bookDAO = new BookDAOImpl();</span>
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L48">    public Controller() {</span>
+<span class="nc" id="L49">        this.bookDAO = new BookDAOImpl();</span>
+<span class="nc" id="L50">    }</span>
 
     @FXML
     private void initialize() {
-<span class="nc" id="L58">        idColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;id&quot;));</span>
-<span class="nc" id="L59">        titleColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;title&quot;));</span>
-<span class="nc" id="L60">        authorColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;author&quot;));</span>
-<span class="nc" id="L61">        isbnColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;isbn&quot;));</span>
-<span class="nc" id="L62">        availableColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;available&quot;));</span>
+<span class="nc" id="L54">        idColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;id&quot;));</span>
+<span class="nc" id="L55">        titleColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;title&quot;));</span>
+<span class="nc" id="L56">        authorColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;author&quot;));</span>
+<span class="nc" id="L57">        isbnColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;isbn&quot;));</span>
+<span class="nc" id="L58">        availableColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;available&quot;));</span>
 
-<span class="nc" id="L64">        loadBookData();</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L60">        loadBookData();</span>
+<span class="nc" id="L61">    }</span>
 
     private void loadBookData() {
-<span class="nc" id="L68">        List&lt;Book&gt; books = bookDAO.getAllBooks();</span>
-<span class="nc" id="L69">        bookTableView.getItems().setAll(books);</span>
-<span class="nc" id="L70">    }</span>
+<span class="nc" id="L64">        List&lt;Book&gt; books = bookDAO.getAllBooks();</span>
+<span class="nc" id="L65">        bookTableView.getItems().setAll(books);</span>
+<span class="nc" id="L66">    }</span>
 
-    @FXML
-    private void handleAddBook() {
-<span class="nc" id="L74">        String title = titleField.getText();</span>
-<span class="nc" id="L75">        String author = authorField.getText();</span>
-<span class="nc" id="L76">        String isbn = isbnField.getText();</span>
-<span class="nc" id="L77">        Book newBook = new Book(0, title, author, isbn, true);</span>
-<span class="nc" id="L78">        bookDAO.addBook(newBook);</span>
-<span class="nc" id="L79">        loadBookData();</span>
+    @FXML void handleAddBook() {
+<span class="nc" id="L69">        String title = titleField.getText();</span>
+<span class="nc" id="L70">        String author = authorField.getText();</span>
+<span class="nc" id="L71">        String isbn = isbnField.getText();</span>
+<span class="nc" id="L72">        Book newBook = new Book(0, title, author, isbn, true);</span>
+<span class="nc" id="L73">        bookDAO.addBook(newBook);</span>
+<span class="nc" id="L74">        loadBookData();</span>
  
-<span class="nc" id="L81">        titleField.clear();</span>
-<span class="nc" id="L82">        authorField.clear();</span>
-<span class="nc" id="L83">        isbnField.clear();</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L76">        titleField.clear();</span>
+<span class="nc" id="L77">        authorField.clear();</span>
+<span class="nc" id="L78">        isbnField.clear();</span>
+<span class="nc" id="L79">    }</span>
 
-    @FXML
-    private void handleSearch() {
-<span class="nc" id="L88">        String searchText = searchField.getText().trim();</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (searchText.isEmpty()) {</span>
-<span class="nc" id="L90">            loadBookData(); </span>
+    @FXML void handleSearch() {
+<span class="nc" id="L82">        String searchText = searchField.getText().trim();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (searchText.isEmpty()) {</span>
+<span class="nc" id="L84">            loadBookData(); </span>
         } else {
-<span class="nc" id="L92">            List&lt;Book&gt; foundBooks = bookDAO.searchBooks(searchText);</span>
-<span class="nc" id="L93">            bookTableView.getItems().setAll(foundBooks);</span>
+<span class="nc" id="L86">            List&lt;Book&gt; foundBooks = bookDAO.searchBooks(searchText);</span>
+<span class="nc" id="L87">            bookTableView.getItems().setAll(foundBooks);</span>
         }
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L89">    }</span>
 
     @FXML
     private void handleBorrowBook() {
-<span class="nc" id="L99">        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (selectedBook != null) {</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (!selectedBook.isAvailable()) {</span>
-<span class="nc" id="L102">                Alert alert = new Alert(Alert.AlertType.WARNING);</span>
-<span class="nc" id="L103">                alert.setTitle(&quot;Book Not Available&quot;);</span>
-<span class="nc" id="L104">                alert.setHeaderText(null);</span>
-<span class="nc" id="L105">                alert.setContentText(&quot;This book is already borrowed.&quot;);</span>
-<span class="nc" id="L106">                alert.showAndWait();</span>
-<span class="nc" id="L107">            } else {</span>
-<span class="nc" id="L108">                bookDAO.borrowBook(selectedBook.getId());</span>
-<span class="nc" id="L109">                selectedBook.setAvailable(false);</span>
-<span class="nc" id="L110">                bookTableView.refresh(); </span>
+<span class="nc" id="L93">        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (selectedBook != null) {</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (!selectedBook.isAvailable()) {</span>
+<span class="nc" id="L96">                Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L97">                alert.setTitle(&quot;Book Not Available&quot;);</span>
+<span class="nc" id="L98">                alert.setHeaderText(null);</span>
+<span class="nc" id="L99">                alert.setContentText(&quot;This book is already borrowed.&quot;);</span>
+<span class="nc" id="L100">                alert.showAndWait();</span>
+<span class="nc" id="L101">            } else {</span>
+<span class="nc" id="L102">                bookDAO.borrowBook(selectedBook.getId());</span>
+<span class="nc" id="L103">                selectedBook.setAvailable(false);</span>
+<span class="nc" id="L104">                bookTableView.refresh(); </span>
             }
         } else {
-<span class="nc" id="L113">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
-<span class="nc" id="L114">            alert.setTitle(&quot;No Book Selected&quot;);</span>
-<span class="nc" id="L115">            alert.setHeaderText(null);</span>
-<span class="nc" id="L116">            alert.setContentText(&quot;Please select a book to borrow.&quot;);</span>
-<span class="nc" id="L117">            alert.showAndWait();</span>
+<span class="nc" id="L107">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L108">            alert.setTitle(&quot;No Book Selected&quot;);</span>
+<span class="nc" id="L109">            alert.setHeaderText(null);</span>
+<span class="nc" id="L110">            alert.setContentText(&quot;Please select a book to borrow.&quot;);</span>
+<span class="nc" id="L111">            alert.showAndWait();</span>
         }
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L113">    }</span>
 
     @FXML
     private void handleDeleteBook() {
-<span class="nc" id="L123">        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (selectedBook != null) {</span>
-<span class="nc" id="L125">            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);</span>
-<span class="nc" id="L126">            alert.setTitle(&quot;Confirm Delete&quot;);</span>
-<span class="nc" id="L127">            alert.setHeaderText(null);</span>
-<span class="nc" id="L128">            alert.setContentText(&quot;Are you sure you want to delete the selected book?&quot;);</span>
+<span class="nc" id="L117">        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (selectedBook != null) {</span>
+<span class="nc" id="L119">            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);</span>
+<span class="nc" id="L120">            alert.setTitle(&quot;Confirm Delete&quot;);</span>
+<span class="nc" id="L121">            alert.setHeaderText(null);</span>
+<span class="nc" id="L122">            alert.setContentText(&quot;Are you sure you want to delete the selected book?&quot;);</span>
 
-<span class="nc" id="L130">            Optional&lt;ButtonType&gt; result = alert.showAndWait();</span>
-<span class="nc bnc" id="L131" title="All 4 branches missed.">            if (result.isPresent() &amp;&amp; result.get() == ButtonType.OK) {</span>
-<span class="nc" id="L132">                bookDAO.deleteBook(selectedBook.getId());</span>
-<span class="nc" id="L133">                bookTableView.getItems().remove(selectedBook);</span>
+<span class="nc" id="L124">            Optional&lt;ButtonType&gt; result = alert.showAndWait();</span>
+<span class="nc bnc" id="L125" title="All 4 branches missed.">            if (result.isPresent() &amp;&amp; result.get() == ButtonType.OK) {</span>
+<span class="nc" id="L126">                bookDAO.deleteBook(selectedBook.getId());</span>
+<span class="nc" id="L127">                bookTableView.getItems().remove(selectedBook);</span>
             }
-<span class="nc" id="L135">        } else {</span>
-<span class="nc" id="L136">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
-<span class="nc" id="L137">            alert.setTitle(&quot;No Book Selected&quot;);</span>
-<span class="nc" id="L138">            alert.setHeaderText(null);</span>
-<span class="nc" id="L139">            alert.setContentText(&quot;Please select a book to delete.&quot;);</span>
-<span class="nc" id="L140">            alert.showAndWait();</span>
+<span class="nc" id="L129">        } else {</span>
+<span class="nc" id="L130">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L131">            alert.setTitle(&quot;No Book Selected&quot;);</span>
+<span class="nc" id="L132">            alert.setHeaderText(null);</span>
+<span class="nc" id="L133">            alert.setContentText(&quot;Please select a book to delete.&quot;);</span>
+<span class="nc" id="L134">            alert.showAndWait();</span>
         }
-<span class="nc" id="L142">    }</span>
+<span class="nc" id="L136">    }</span>
 
     @FXML
     private void switchToPatrons() {
-<span class="nc" id="L146">        switchView(&quot;patronfx.fxml&quot;);</span>
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L140">        switchView(&quot;patronfx.fxml&quot;);</span>
+<span class="nc" id="L141">    }</span>
 
     @FXML
     private void switchToTransaction() {
-<span class="nc" id="L151">        switchView(&quot;transactfx.fxml&quot;);</span>
-<span class="nc" id="L152">    }</span>
+<span class="nc" id="L145">        switchView(&quot;transactfx.fxml&quot;);</span>
+<span class="nc" id="L146">    }</span>
 
     /**
      * @param fxml
      */
     private void switchView(String fxml) {
         try {
-<span class="nc" id="L159">            Parent view = FXMLLoader.load(getClass().getResource(fxml));</span>
-<span class="nc" id="L160">            Scene scene = new Scene(view);</span>
-<span class="nc" id="L161">            Stage stage = (Stage) bookTableView.getScene().getWindow();</span>
-<span class="nc" id="L162">            stage.setScene(scene);</span>
-<span class="nc" id="L163">        } catch (IOException e) {</span>
-<span class="nc" id="L164">            e.printStackTrace();</span>
-<span class="nc" id="L165">        }</span>
-<span class="nc" id="L166">    }</span>
+<span class="nc" id="L153">            Parent view = FXMLLoader.load(getClass().getResource(fxml));</span>
+<span class="nc" id="L154">            Scene scene = new Scene(view);</span>
+<span class="nc" id="L155">            Stage stage = (Stage) bookTableView.getScene().getWindow();</span>
+<span class="nc" id="L156">            stage.setScene(scene);</span>
+<span class="nc" id="L157">        } catch (IOException e) {</span>
+<span class="nc" id="L158">            e.printStackTrace();</span>
+<span class="nc" id="L159">        }</span>
+<span class="nc" id="L160">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

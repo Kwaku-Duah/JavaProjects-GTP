@@ -30,14 +30,10 @@ public class Controller {
     @FXML
     private TableColumn<Book, Boolean> availableColumn;
 
-    @FXML
-    private TextField titleField;
-    @FXML
-    private TextField authorField;
-    @FXML
-    private TextField isbnField;
-    @FXML
-    private TextField searchField;
+    @FXML TextField titleField;
+    @FXML TextField authorField;
+    @FXML TextField isbnField;
+    @FXML TextField searchField;
     @FXML
     private Button addButton;
     @FXML
@@ -47,7 +43,7 @@ public class Controller {
     @FXML
     private Button deleteButton;
 
-    private BookDAO bookDAO;
+    BookDAO bookDAO;
 
     public Controller() {
         this.bookDAO = new BookDAOImpl();
@@ -69,8 +65,7 @@ public class Controller {
         bookTableView.getItems().setAll(books);
     }
 
-    @FXML
-    private void handleAddBook() {
+    @FXML void handleAddBook() {
         String title = titleField.getText();
         String author = authorField.getText();
         String isbn = isbnField.getText();
@@ -83,8 +78,7 @@ public class Controller {
         isbnField.clear();
     }
 
-    @FXML
-    private void handleSearch() {
+    @FXML void handleSearch() {
         String searchText = searchField.getText().trim();
         if (searchText.isEmpty()) {
             loadBookData(); 
