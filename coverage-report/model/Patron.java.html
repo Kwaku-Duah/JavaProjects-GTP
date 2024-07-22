@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Patron.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">Patron.java</span></div><h1>Patron.java</h1><pre class="source lang-java linenums">package model;
+
+import java.util.Queue;
+import java.util.Stack;
+import java.util.LinkedList;
+
+public class Patron {
+    private int id;
+    private String name;
+    private String email;
+    private String phone;
+    private Stack&lt;String&gt; recentActivities; 
+    private Queue&lt;String&gt; bookRequests; 
+
+<span class="fc" id="L15">    public Patron(int id, String name, String email, String phone) {</span>
+<span class="fc" id="L16">        this.id = id;</span>
+<span class="fc" id="L17">        this.name = name;</span>
+<span class="fc" id="L18">        this.email = email;</span>
+<span class="fc" id="L19">        this.phone = phone;</span>
+<span class="fc" id="L20">        this.recentActivities = new Stack&lt;&gt;();</span>
+<span class="fc" id="L21">        this.bookRequests = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L22">    }</span>
+
+    // Getters and setters
+    public int getId() {
+<span class="fc" id="L26">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="fc" id="L30">        this.id = id;</span>
+<span class="fc" id="L31">    }</span>
+
+    public String getName() {
+<span class="fc" id="L34">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L38">        this.name = name;</span>
+<span class="fc" id="L39">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L42">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L46">        this.email = email;</span>
+<span class="fc" id="L47">    }</span>
+
+    public String getPhone() {
+<span class="fc" id="L50">        return phone;</span>
+    }
+
+    public void setPhone(String phone) {
+<span class="fc" id="L54">        this.phone = phone;</span>
+<span class="fc" id="L55">    }</span>
+
+    // Stack methods for recent activities
+    public void addActivity(String activity) {
+<span class="fc" id="L59">        recentActivities.push(activity);</span>
+<span class="fc" id="L60">    }</span>
+
+    public String getLastActivity() {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        return recentActivities.isEmpty() ? &quot;No recent activities&quot; : recentActivities.pop();</span>
+    }
+
+    public Stack&lt;String&gt; getRecentActivities() {
+<span class="fc" id="L67">        return recentActivities;</span>
+    }
+
+    // Queue methods for book requests
+    public void requestBook(String bookTitle) {
+<span class="fc" id="L72">        bookRequests.offer(bookTitle);</span>
+<span class="fc" id="L73">    }</span>
+
+    public String getNextBookRequest() {
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        return bookRequests.isEmpty() ? &quot;No book requests&quot; : bookRequests.poll();</span>
+    }
+
+    public Queue&lt;String&gt; getBookRequests() {
+<span class="fc" id="L80">        return bookRequests;</span>
+    }
+
+    // Method overriding for polymorphism
+    @Override
+    public String toString() {
+<span class="fc" id="L86">        return &quot;Patron{&quot; +</span>
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, email='&quot; + email + '\'' +
+                &quot;, phone='&quot; + phone + '\'' +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

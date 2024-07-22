@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookDAOImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">dao</a> &gt; <span class="el_source">BookDAOImpl.java</span></div><h1>BookDAOImpl.java</h1><pre class="source lang-java linenums">package dao;
+
+import model.Book;
+import database.DatabaseManager;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList; // Import LinkedList
+import java.util.List;
+
+public class BookDAOImpl implements BookDAO {
+
+    // Use LinkedList for managing books
+    private LinkedList&lt;Book&gt; booksLinkedList;
+
+<span class="nc" id="L21">    public BookDAOImpl() {</span>
+<span class="nc" id="L22">        this.booksLinkedList = new LinkedList&lt;&gt;(); </span>
+<span class="nc" id="L23">    }</span>
+
+    /**
+     * Retrieve all books from the database and store them in a LinkedList.
+     *
+     * @return List&lt;Book&gt; containing all books from the database
+     */
+    @Override
+    public List&lt;Book&gt; getAllBooks() {
+<span class="nc" id="L32">        booksLinkedList.clear(); </span>
+<span class="nc" id="L33">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+<span class="nc" id="L34">            String query = &quot;SELECT * FROM Book&quot;;</span>
+<span class="nc" id="L35">            try (PreparedStatement stmt = conn.prepareStatement(query);</span>
+<span class="nc" id="L36">                 ResultSet rs = stmt.executeQuery()) {</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                while (rs.next()) {</span>
+<span class="nc" id="L38">                    Book book = new Book(</span>
+<span class="nc" id="L39">                            rs.getInt(&quot;id&quot;),</span>
+<span class="nc" id="L40">                            rs.getString(&quot;title&quot;),</span>
+<span class="nc" id="L41">                            rs.getString(&quot;author&quot;),</span>
+<span class="nc" id="L42">                            rs.getString(&quot;isbn&quot;),</span>
+<span class="nc" id="L43">                            rs.getBoolean(&quot;isAvailable&quot;));</span>
+<span class="nc" id="L44">                    booksLinkedList.add(book); // Add book to LinkedList</span>
+<span class="nc" id="L45">                }</span>
+            }
+<span class="nc" id="L47">        } catch (SQLException e) {</span>
+<span class="nc" id="L48">            e.printStackTrace();</span>
+<span class="nc" id="L49">        }</span>
+<span class="nc" id="L50">        return new LinkedList&lt;&gt;(booksLinkedList); // Return as LinkedList</span>
+    }
+
+    @Override
+    public Book getBookById(int id) {
+<span class="nc" id="L55">        Book book = null;</span>
+<span class="nc" id="L56">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+<span class="nc" id="L57">            String query = &quot;SELECT * FROM Book WHERE id = ?&quot;;</span>
+<span class="nc" id="L58">            try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+<span class="nc" id="L59">                stmt.setInt(1, id);</span>
+<span class="nc" id="L60">                try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                    if (rs.next()) {</span>
+<span class="nc" id="L62">                        book = new Book(</span>
+<span class="nc" id="L63">                                rs.getInt(&quot;id&quot;),</span>
+<span class="nc" id="L64">                                rs.getString(&quot;title&quot;),</span>
+<span class="nc" id="L65">                                rs.getString(&quot;author&quot;),</span>
+<span class="nc" id="L66">                                rs.getString(&quot;isbn&quot;),</span>
+<span class="nc" id="L67">                                rs.getBoolean(&quot;isAvailable&quot;));</span>
+                    }
+                }
+            }
+<span class="nc" id="L71">        } catch (SQLException e) {</span>
+<span class="nc" id="L72">            e.printStackTrace();</span>
+<span class="nc" id="L73">        }</span>
+<span class="nc" id="L74">        return book;</span>
+    }
+
+    @Override
+    public void addBook(Book book) {
+<span class="nc" id="L79">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+<span class="nc" id="L80">            String query = &quot;INSERT INTO Book (title, author, isbn, isAvailable) VALUES (?, ?, ?, ?)&quot;;</span>
+<span class="nc" id="L81">            try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+<span class="nc" id="L82">                stmt.setString(1, book.getTitle());</span>
+<span class="nc" id="L83">                stmt.setString(2, book.getAuthor());</span>
+<span class="nc" id="L84">                stmt.setString(3, book.getIsbn());</span>
+<span class="nc" id="L85">                stmt.setBoolean(4, book.isAvailable());</span>
+<span class="nc" id="L86">                stmt.executeUpdate();</span>
+            }
+<span class="nc" id="L88">        } catch (SQLException e) {</span>
+<span class="nc" id="L89">            e.printStackTrace();</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">    }</span>
+
+    @Override
+    public void updateBook(Book book) {
+<span class="nc" id="L95">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+<span class="nc" id="L96">            String query = &quot;UPDATE Book SET title = ?, author = ?, isbn = ?, isAvailable = ? WHERE id = ?&quot;;</span>
+<span class="nc" id="L97">            try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+<span class="nc" id="L98">                stmt.setString(1, book.getTitle());</span>
+<span class="nc" id="L99">                stmt.setString(2, book.getAuthor());</span>
+<span class="nc" id="L100">                stmt.setString(3, book.getIsbn());</span>
+<span class="nc" id="L101">                stmt.setBoolean(4, book.isAvailable());</span>
+<span class="nc" id="L102">                stmt.setInt(5, book.getId());</span>
+<span class="nc" id="L103">                stmt.executeUpdate();</span>
+            }
+<span class="nc" id="L105">        } catch (SQLException e) {</span>
+<span class="nc" id="L106">            e.printStackTrace();</span>
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">    }</span>
+
+    @Override
+    public void deleteBook(int id) {
+<span class="nc" id="L112">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+            // Retrieve the book to check availability
+<span class="nc" id="L114">            Book bookToDelete = getBookById(id);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (bookToDelete == null) {</span>
+<span class="nc" id="L116">                System.out.println(&quot;Book with ID &quot; + id + &quot; does not exist.&quot;);</span>
+<span class="nc" id="L117">                return;</span>
+            }
+
+            // Check if the book is available
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (!bookToDelete.isAvailable()) {</span>
+<span class="nc" id="L122">                Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L123">                alert.setTitle(&quot;Cannot Delete Book&quot;);</span>
+<span class="nc" id="L124">                alert.setHeaderText(null);</span>
+<span class="nc" id="L125">                alert.setContentText(&quot;Cannot delete book with ID &quot; + id + &quot;. Book has been borrowed.&quot;);</span>
+<span class="nc" id="L126">                alert.show();</span>
+<span class="nc" id="L127">                return;</span>
+            }
+
+            // Proceed with deletion if the book is available
+<span class="nc" id="L131">            String query = &quot;DELETE FROM Book WHERE id = ?&quot;;</span>
+<span class="nc" id="L132">            try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+<span class="nc" id="L133">                stmt.setInt(1, id);</span>
+<span class="nc" id="L134">                stmt.executeUpdate();</span>
+            }
+<span class="nc bnc" id="L136" title="All 4 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L137">            e.printStackTrace();</span>
+<span class="nc" id="L138">        }</span>
+<span class="nc" id="L139">    }</span>
+
+    @Override
+    public void borrowBook(int id) {
+<span class="nc" id="L143">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+<span class="nc" id="L144">            String checkQuery = &quot;SELECT isAvailable FROM Book WHERE id = ?&quot;;</span>
+<span class="nc" id="L145">            boolean currentAvailability = false;</span>
+<span class="nc" id="L146">            try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {</span>
+<span class="nc" id="L147">                checkStmt.setInt(1, id);</span>
+<span class="nc" id="L148">                try (ResultSet rs = checkStmt.executeQuery()) {</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                    if (rs.next()) {</span>
+<span class="nc" id="L150">                        currentAvailability = rs.getBoolean(&quot;isAvailable&quot;);</span>
+                    }
+                }
+            }
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (currentAvailability) {</span>
+<span class="nc" id="L156">                String updateQuery = &quot;UPDATE Book SET isAvailable = false WHERE id = ?&quot;;</span>
+<span class="nc" id="L157">                try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {</span>
+<span class="nc" id="L158">                    updateStmt.setInt(1, id);</span>
+<span class="nc" id="L159">                    updateStmt.executeUpdate();</span>
+
+                    // Show confirmation message
+<span class="nc" id="L162">                    Alert alert = new Alert(AlertType.INFORMATION);</span>
+<span class="nc" id="L163">                    alert.setTitle(&quot;Book Borrowed&quot;);</span>
+<span class="nc" id="L164">                    alert.setHeaderText(null);</span>
+<span class="nc" id="L165">                    alert.setContentText(&quot;Book with ID &quot; + id + &quot; is borrowed!&quot;);</span>
+<span class="nc" id="L166">                    alert.showAndWait();</span>
+                }
+<span class="nc" id="L168">            } else {</span>
+<span class="nc" id="L169">                throw new IllegalStateException(&quot;Book with ID &quot; + id + &quot; is not available for borrowing.&quot;);</span>
+            }
+
+<span class="nc" id="L172">        } catch (SQLException e) {</span>
+<span class="nc" id="L173">            e.printStackTrace();</span>
+<span class="nc" id="L174">        }</span>
+<span class="nc" id="L175">    }</span>
+
+    @Override
+    public List&lt;Book&gt; searchBooks(String searchText) {
+<span class="nc" id="L179">        List&lt;Book&gt; foundBooks = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L180">        try (Connection conn = DatabaseManager.getConnection()) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (searchText.isEmpty()) {</span>
+<span class="nc" id="L182">                return getAllBooks(); </span>
+            }
+<span class="nc" id="L184">            String query = &quot;SELECT * FROM Book WHERE title LIKE ? OR author LIKE ?&quot;;</span>
+<span class="nc" id="L185">            try (PreparedStatement stmt = conn.prepareStatement(query)) {</span>
+<span class="nc" id="L186">                stmt.setString(1, &quot;%&quot; + searchText + &quot;%&quot;);</span>
+<span class="nc" id="L187">                stmt.setString(2, &quot;%&quot; + searchText + &quot;%&quot;);</span>
+<span class="nc" id="L188">                try (ResultSet rs = stmt.executeQuery()) {</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                    while (rs.next()) {</span>
+<span class="nc" id="L190">                        Book book = new Book(</span>
+<span class="nc" id="L191">                                rs.getInt(&quot;id&quot;),</span>
+<span class="nc" id="L192">                                rs.getString(&quot;title&quot;),</span>
+<span class="nc" id="L193">                                rs.getString(&quot;author&quot;),</span>
+<span class="nc" id="L194">                                rs.getString(&quot;isbn&quot;),</span>
+<span class="nc" id="L195">                                rs.getBoolean(&quot;isAvailable&quot;));</span>
+<span class="nc" id="L196">                        foundBooks.add(book);</span>
+<span class="nc" id="L197">                    }</span>
+                }
+            }
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        } catch (SQLException e) {</span>
+<span class="nc" id="L201">            e.printStackTrace();</span>
+<span class="nc" id="L202">        }</span>
+<span class="nc" id="L203">        return foundBooks;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

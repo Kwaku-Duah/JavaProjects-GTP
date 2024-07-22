@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">application</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package application;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import model.Book;
+import dao.BookDAO;
+import dao.BookDAOImpl;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+public class Controller {
+
+    @FXML
+    private TableView&lt;Book&gt; bookTableView;
+    @FXML
+    private TableColumn&lt;Book, Integer&gt; idColumn;
+    @FXML
+    private TableColumn&lt;Book, String&gt; titleColumn;
+    @FXML
+    private TableColumn&lt;Book, String&gt; authorColumn;
+    @FXML
+    private TableColumn&lt;Book, String&gt; isbnColumn;
+    @FXML
+    private TableColumn&lt;Book, Boolean&gt; availableColumn;
+
+    @FXML
+    private TextField titleField;
+    @FXML
+    private TextField authorField;
+    @FXML
+    private TextField isbnField;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button addButton;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button borrowButton;
+    @FXML
+    private Button deleteButton;
+
+    private BookDAO bookDAO;
+
+<span class="nc" id="L52">    public Controller() {</span>
+<span class="nc" id="L53">        this.bookDAO = new BookDAOImpl();</span>
+<span class="nc" id="L54">    }</span>
+
+    @FXML
+    private void initialize() {
+<span class="nc" id="L58">        idColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;id&quot;));</span>
+<span class="nc" id="L59">        titleColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;title&quot;));</span>
+<span class="nc" id="L60">        authorColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;author&quot;));</span>
+<span class="nc" id="L61">        isbnColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;isbn&quot;));</span>
+<span class="nc" id="L62">        availableColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;available&quot;));</span>
+
+<span class="nc" id="L64">        loadBookData();</span>
+<span class="nc" id="L65">    }</span>
+
+    private void loadBookData() {
+<span class="nc" id="L68">        List&lt;Book&gt; books = bookDAO.getAllBooks();</span>
+<span class="nc" id="L69">        bookTableView.getItems().setAll(books);</span>
+<span class="nc" id="L70">    }</span>
+
+    @FXML
+    private void handleAddBook() {
+<span class="nc" id="L74">        String title = titleField.getText();</span>
+<span class="nc" id="L75">        String author = authorField.getText();</span>
+<span class="nc" id="L76">        String isbn = isbnField.getText();</span>
+<span class="nc" id="L77">        Book newBook = new Book(0, title, author, isbn, true);</span>
+<span class="nc" id="L78">        bookDAO.addBook(newBook);</span>
+<span class="nc" id="L79">        loadBookData();</span>
+ 
+<span class="nc" id="L81">        titleField.clear();</span>
+<span class="nc" id="L82">        authorField.clear();</span>
+<span class="nc" id="L83">        isbnField.clear();</span>
+<span class="nc" id="L84">    }</span>
+
+    @FXML
+    private void handleSearch() {
+<span class="nc" id="L88">        String searchText = searchField.getText().trim();</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (searchText.isEmpty()) {</span>
+<span class="nc" id="L90">            loadBookData(); </span>
+        } else {
+<span class="nc" id="L92">            List&lt;Book&gt; foundBooks = bookDAO.searchBooks(searchText);</span>
+<span class="nc" id="L93">            bookTableView.getItems().setAll(foundBooks);</span>
+        }
+<span class="nc" id="L95">    }</span>
+
+    @FXML
+    private void handleBorrowBook() {
+<span class="nc" id="L99">        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (selectedBook != null) {</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (!selectedBook.isAvailable()) {</span>
+<span class="nc" id="L102">                Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L103">                alert.setTitle(&quot;Book Not Available&quot;);</span>
+<span class="nc" id="L104">                alert.setHeaderText(null);</span>
+<span class="nc" id="L105">                alert.setContentText(&quot;This book is already borrowed.&quot;);</span>
+<span class="nc" id="L106">                alert.showAndWait();</span>
+<span class="nc" id="L107">            } else {</span>
+<span class="nc" id="L108">                bookDAO.borrowBook(selectedBook.getId());</span>
+<span class="nc" id="L109">                selectedBook.setAvailable(false);</span>
+<span class="nc" id="L110">                bookTableView.refresh(); </span>
+            }
+        } else {
+<span class="nc" id="L113">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L114">            alert.setTitle(&quot;No Book Selected&quot;);</span>
+<span class="nc" id="L115">            alert.setHeaderText(null);</span>
+<span class="nc" id="L116">            alert.setContentText(&quot;Please select a book to borrow.&quot;);</span>
+<span class="nc" id="L117">            alert.showAndWait();</span>
+        }
+<span class="nc" id="L119">    }</span>
+
+    @FXML
+    private void handleDeleteBook() {
+<span class="nc" id="L123">        Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (selectedBook != null) {</span>
+<span class="nc" id="L125">            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);</span>
+<span class="nc" id="L126">            alert.setTitle(&quot;Confirm Delete&quot;);</span>
+<span class="nc" id="L127">            alert.setHeaderText(null);</span>
+<span class="nc" id="L128">            alert.setContentText(&quot;Are you sure you want to delete the selected book?&quot;);</span>
+
+<span class="nc" id="L130">            Optional&lt;ButtonType&gt; result = alert.showAndWait();</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">            if (result.isPresent() &amp;&amp; result.get() == ButtonType.OK) {</span>
+<span class="nc" id="L132">                bookDAO.deleteBook(selectedBook.getId());</span>
+<span class="nc" id="L133">                bookTableView.getItems().remove(selectedBook);</span>
+            }
+<span class="nc" id="L135">        } else {</span>
+<span class="nc" id="L136">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L137">            alert.setTitle(&quot;No Book Selected&quot;);</span>
+<span class="nc" id="L138">            alert.setHeaderText(null);</span>
+<span class="nc" id="L139">            alert.setContentText(&quot;Please select a book to delete.&quot;);</span>
+<span class="nc" id="L140">            alert.showAndWait();</span>
+        }
+<span class="nc" id="L142">    }</span>
+
+    @FXML
+    private void switchToPatrons() {
+<span class="nc" id="L146">        switchView(&quot;patronfx.fxml&quot;);</span>
+<span class="nc" id="L147">    }</span>
+
+    @FXML
+    private void switchToTransaction() {
+<span class="nc" id="L151">        switchView(&quot;transactfx.fxml&quot;);</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * @param fxml
+     */
+    private void switchView(String fxml) {
+        try {
+<span class="nc" id="L159">            Parent view = FXMLLoader.load(getClass().getResource(fxml));</span>
+<span class="nc" id="L160">            Scene scene = new Scene(view);</span>
+<span class="nc" id="L161">            Stage stage = (Stage) bookTableView.getScene().getWindow();</span>
+<span class="nc" id="L162">            stage.setScene(scene);</span>
+<span class="nc" id="L163">        } catch (IOException e) {</span>
+<span class="nc" id="L164">            e.printStackTrace();</span>
+<span class="nc" id="L165">        }</span>
+<span class="nc" id="L166">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

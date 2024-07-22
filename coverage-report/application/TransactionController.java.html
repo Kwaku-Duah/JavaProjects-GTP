@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">application</a> &gt; <span class="el_source">TransactionController.java</span></div><h1>TransactionController.java</h1><pre class="source lang-java linenums">package application;
+
+import dao.TransactionDAO;
+import dao.TransactionDAOImpl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import model.Transaction;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+
+public class TransactionController {
+
+    @FXML
+    private TableView&lt;Transaction&gt; transactionsTableView;
+    @FXML
+    
+    private TableColumn&lt;Transaction, Integer&gt; transactionIdColumn;
+    @FXML
+    private TableColumn&lt;Transaction, Integer&gt; bookIdColumn;
+    @FXML
+    private TableColumn&lt;Transaction, Integer&gt; patronIdColumn;
+    @FXML
+    private TableColumn&lt;Transaction, LocalDate&gt; issueDateColumn;
+    @FXML
+    private TableColumn&lt;Transaction, LocalDate&gt; returnDateColumn;
+    @FXML
+    private TextField bookIdField;
+    @FXML
+    private TextField patronIdField;
+    @FXML
+    private TextField issueDateField;
+    @FXML
+    private TextField returnDateField;
+
+    private TransactionDAO transactionDAO;
+    private ObservableList&lt;Transaction&gt; transactionsList;
+
+
+
+    /**
+ * Controller class for managing transactions in a library application.
+ * Utilizes encapsulation, abstraction
+ */
+
+<span class="nc" id="L57">    public TransactionController() {</span>
+<span class="nc" id="L58">        this.transactionDAO = new TransactionDAOImpl();</span>
+<span class="nc" id="L59">    }</span>
+
+    @FXML
+    private void initialize() {
+<span class="nc" id="L63">        transactionIdColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;id&quot;));</span>
+<span class="nc" id="L64">        bookIdColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;bookId&quot;));</span>
+<span class="nc" id="L65">        patronIdColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;patronId&quot;));</span>
+<span class="nc" id="L66">        issueDateColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;issueDate&quot;));</span>
+<span class="nc" id="L67">        returnDateColumn.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;returnDate&quot;));</span>
+
+<span class="nc" id="L69">        transactionsList = FXCollections.observableArrayList();</span>
+<span class="nc" id="L70">        loadTransactionData();</span>
+<span class="nc" id="L71">    }</span>
+
+        /**
+     * Loads transaction data from the database and sets it to the TableView.
+     * Utilizes abstraction to hide the details of data retrieval from the UI.
+     */
+
+    private void loadTransactionData() {
+<span class="nc" id="L79">        List&lt;Transaction&gt; transactionData = transactionDAO.getAllTransactions();</span>
+<span class="nc" id="L80">        transactionsList.setAll(transactionData);</span>
+<span class="nc" id="L81">        transactionsTableView.setItems(transactionsList);</span>
+<span class="nc" id="L82">    }</span>
+
+    @FXML
+    private void handleAddTransaction() {
+        try {
+<span class="nc" id="L87">            int bookId = Integer.parseInt(bookIdField.getText().trim());</span>
+<span class="nc" id="L88">            int patronId = Integer.parseInt(patronIdField.getText().trim());</span>
+<span class="nc" id="L89">            LocalDate issueDate = LocalDate.parse(issueDateField.getText().trim());</span>
+<span class="nc" id="L90">            LocalDate returnDate = LocalDate.parse(returnDateField.getText().trim());</span>
+
+<span class="nc" id="L92">            Transaction newTransaction = new Transaction(0, bookId, patronId, issueDate, returnDate);</span>
+<span class="nc" id="L93">            transactionDAO.addTransaction(newTransaction);</span>
+<span class="nc" id="L94">            loadTransactionData();</span>
+
+<span class="nc" id="L96">            showAlert(Alert.AlertType.INFORMATION, &quot;Transaction Added&quot;, &quot;New transaction has been added successfully.&quot;);</span>
+<span class="nc" id="L97">            clearFields();</span>
+<span class="nc" id="L98">        } catch (Exception e) {</span>
+<span class="nc" id="L99">            showAlert(Alert.AlertType.WARNING, &quot;Invalid Input&quot;, &quot;Please provide valid input for all fields.&quot;);</span>
+<span class="nc" id="L100">        }</span>
+<span class="nc" id="L101">    }</span>
+
+    @FXML
+    private void handleDeleteTransaction() {
+<span class="nc" id="L105">        Transaction selectedTransaction = transactionsTableView.getSelectionModel().getSelectedItem();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (selectedTransaction != null) {</span>
+<span class="nc" id="L107">            transactionDAO.deleteTransaction(selectedTransaction.getId());</span>
+<span class="nc" id="L108">            loadTransactionData();</span>
+
+<span class="nc" id="L110">            showAlert(Alert.AlertType.INFORMATION, &quot;Transaction Deleted&quot;, &quot;The transaction has been deleted successfully.&quot;);</span>
+        } else {
+<span class="nc" id="L112">            showAlert(Alert.AlertType.WARNING, &quot;No Selection&quot;, &quot;Please select a transaction to delete.&quot;);</span>
+        }
+<span class="nc" id="L114">    }</span>
+
+    
+    /** 
+     * @param type
+     * @param title
+     * @param content
+     */
+    private void showAlert(Alert.AlertType type, String title, String content) {
+<span class="nc" id="L123">        Alert alert = new Alert(type);</span>
+<span class="nc" id="L124">        alert.setTitle(title);</span>
+<span class="nc" id="L125">        alert.setHeaderText(null);</span>
+<span class="nc" id="L126">        alert.setContentText(content);</span>
+<span class="nc" id="L127">        alert.showAndWait();</span>
+<span class="nc" id="L128">    }</span>
+
+    private void clearFields() {
+<span class="nc" id="L131">        bookIdField.clear();</span>
+<span class="nc" id="L132">        patronIdField.clear();</span>
+<span class="nc" id="L133">        issueDateField.clear();</span>
+<span class="nc" id="L134">        returnDateField.clear();</span>
+<span class="nc" id="L135">    }</span>
+
+    @FXML
+    private void switchToTransaction() {
+<span class="nc" id="L139">        switchView(&quot;hellofx.fxml&quot;);</span>
+<span class="nc" id="L140">    }</span>
+
+    private void switchView(String fxml) {
+        try {
+<span class="nc" id="L144">            Parent view = FXMLLoader.load(getClass().getResource(fxml));</span>
+<span class="nc" id="L145">            Scene scene = new Scene(view);</span>
+<span class="nc" id="L146">            Stage stage = (Stage) transactionsTableView.getScene().getWindow();</span>
+<span class="nc" id="L147">            stage.setScene(scene);</span>
+<span class="nc" id="L148">        } catch (IOException e) {</span>
+<span class="nc" id="L149">            e.printStackTrace();</span>
+<span class="nc" id="L150">        }</span>
+<span class="nc" id="L151">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

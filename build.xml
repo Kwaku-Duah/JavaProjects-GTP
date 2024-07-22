@@ -1,0 +1,19 @@
+<project name="Coverage Report" default="report">
+    <path id="jacoco.classpath">
+        <fileset dir="/home/kduah/Desktop/libraryManagement/libraryManagement/lib">
+            <include name="jacoco-ant-0.8.12.jar"/>
+        </fileset>
+    </path>
+
+    <taskdef name="jacocoReport" classname="org.jacoco.ant.ReportTask" classpathref="jacoco.classpath"/>
+
+    <target name="report">
+        <mkdir dir="/home/kduah/Desktop/libraryManagement/libraryManagement/coverage-report"/>
+        <jacocoReport>
+            <executiondata file="/home/kduah/Desktop/libraryManagement/libraryManagement/jacoco.exec"/>
+            <classes directory="/home/kduah/Desktop/libraryManagement/libraryManagement/bin"/>
+            <sourcefiles directory="/home/kduah/Desktop/libraryManagement/libraryManagement/src"/>
+            <html reportdir="/home/kduah/Desktop/libraryManagement/libraryManagement/coverage-report"/>
+        </jacocoReport>
+    </target>
+</project>

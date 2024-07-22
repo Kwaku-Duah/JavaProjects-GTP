@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">TransactionController.java</span></div><h1>TransactionController.java</h1><pre class="source lang-java linenums">package controller;
+
+import model.Transaction;
+import dao.TransactionDAO;
+import java.util.List;
+
+/**
+ * Controller class for managing operations related to transactions.
+ * Encapsulates TransactionDAO interactions through public methods.
+ * Supports CRUD operations on transactions.
+ */
+public class TransactionController {
+    private TransactionDAO transactionDAO;
+
+    /**
+     * Constructor to initialize TransactionController with a specific TransactionDAO implementation.
+     * @param transactionDAO The data access object responsible for transaction operations.
+     */
+<span class="nc" id="L19">    public TransactionController(TransactionDAO transactionDAO) {</span>
+<span class="nc" id="L20">        this.transactionDAO = transactionDAO;</span>
+<span class="nc" id="L21">    }</span>
+
+    /**
+     * Retrieves all transactions stored in the data source.
+     * @return List of all transactions.
+     */
+    public List&lt;Transaction&gt; getAllTransactions() {
+<span class="nc" id="L28">        return transactionDAO.getAllTransactions();</span>
+    }
+
+    /**
+     * Retrieves a transaction by its unique identifier.
+     * @param id The identifier of the transaction to retrieve.
+     * @return The transaction object corresponding to the given ID.
+     */
+    public Transaction getTransactionById(int id) {
+<span class="nc" id="L37">        return transactionDAO.getTransactionById(id);</span>
+    }
+
+    /**
+     * Adds a new transaction to the data source.
+     * @param transaction The transaction object to be added.
+     */
+    public void addTransaction(Transaction transaction) {
+<span class="nc" id="L45">        transactionDAO.addTransaction(transaction);</span>
+<span class="nc" id="L46">    }</span>
+
+    /**
+     * Updates an existing transaction in the data source.
+     * @param transaction The updated transaction object.
+     */
+    public void updateTransaction(Transaction transaction) {
+<span class="nc" id="L53">        transactionDAO.updateTransaction(transaction);</span>
+<span class="nc" id="L54">    }</span>
+
+    /**
+     * Deletes a transaction from the data source by its ID.
+     * @param id The ID of the transaction to be deleted.
+     */
+    public void deleteTransaction(int id) {
+<span class="nc" id="L61">        transactionDAO.deleteTransaction(id);</span>
+<span class="nc" id="L62">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

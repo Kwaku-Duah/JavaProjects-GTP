@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">BookController.java</span></div><h1>BookController.java</h1><pre class="source lang-java linenums">package controller;
+
+import model.Book;
+import dao.BookDAO;
+import java.util.List;
+
+/**
+ * Controller class for managing operations related to books.
+ * Uses Object-Oriented Programming (OOP) concepts such as encapsulation
+ */
+public class BookController {
+    private BookDAO bookDAO;
+
+    /**
+     * Constructor to initialize BookController with a BookDAO instance.
+     * 
+     * @param bookDAO The Data Access Object for books.
+     */
+<span class="fc" id="L19">    public BookController(BookDAO bookDAO) {</span>
+<span class="fc" id="L20">        this.bookDAO = bookDAO;</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Retrieves all books from the data source.
+     * 
+     * @return List of all books.
+     */
+    public List&lt;Book&gt; getAllBooks() {
+<span class="fc" id="L29">        return bookDAO.getAllBooks();</span>
+    }
+
+    /**
+     * Retrieves a book by its ID from the data source.
+     * 
+     * @param id The ID of the book to retrieve.
+     * @return The book with the specified ID.
+     */
+    public Book getBookById(int id) {
+<span class="fc" id="L39">        return bookDAO.getBookById(id);</span>
+    }
+
+    /**
+     * Adds a new book to the data source.
+     * 
+     * @param book The book object to add.
+     */
+    public void addBook(Book book) {
+<span class="fc" id="L48">        bookDAO.addBook(book);</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Updates an existing book in the data source.
+     * 
+     * @param book The updated book object.
+     */
+    public void updateBook(Book book) {
+<span class="fc" id="L57">        bookDAO.updateBook(book);</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Deletes a book from the data source based on its ID.
+     * 
+     * @param id The ID of the book to delete.
+     */
+    public void deleteBook(int id) {
+<span class="fc" id="L66">        bookDAO.deleteBook(id);</span>
+<span class="fc" id="L67">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

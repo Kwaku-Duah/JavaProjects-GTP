@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatronController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">PatronController.java</span></div><h1>PatronController.java</h1><pre class="source lang-java linenums">package controller;
+
+import model.Patron;
+import dao.PatronDAO;
+import java.util.List;
+
+/**
+ * Controller class for managing operations related to patrons.
+ * Encapsulates PatronDAO interactions through public methods.
+ * Supports CRUD operations on patrons.
+ */
+public class PatronController {
+    private PatronDAO patronDAO;
+
+    /**
+     * Constructor to initialize PatronController with a specific PatronDAO implementation.
+     * @param patronDAO The data access object responsible for patron operations.
+     */
+<span class="fc" id="L19">    public PatronController(PatronDAO patronDAO) {</span>
+<span class="fc" id="L20">        this.patronDAO = patronDAO;</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Retrieves all patrons stored in the data source.
+     * @return List of all patrons.
+     */
+    public List&lt;Patron&gt; getAllPatrons() {
+<span class="fc" id="L28">        return patronDAO.getAllPatrons();</span>
+    }
+
+    /**
+     * Retrieves a patron by their unique identifier.
+     * @param id The identifier of the patron to retrieve.
+     * @return The patron object corresponding to the given ID.
+     */
+    public Patron getPatronById(int id) {
+<span class="fc" id="L37">        return patronDAO.getPatronById(id);</span>
+    }
+
+    /**
+     * Adds a new patron to the data source.
+     * @param patron The patron object to be added.
+     */
+    public void addPatron(Patron patron) {
+<span class="fc" id="L45">        patronDAO.addPatron(patron);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Updates an existing patron in the data source.
+     * @param patron The updated patron object.
+     */
+    public void updatePatron(Patron patron) {
+<span class="fc" id="L53">        patronDAO.updatePatron(patron);</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Deletes a patron from the data source by their ID.
+     * @param id The ID of the patron to be deleted.
+     */
+    public void deletePatron(int id) {
+<span class="fc" id="L61">        patronDAO.deletePatron(id);</span>
+<span class="fc" id="L62">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>

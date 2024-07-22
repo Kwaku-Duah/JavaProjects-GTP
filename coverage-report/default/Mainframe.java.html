@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Mainframe.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Mainframe.java</span></div><h1>Mainframe.java</h1><pre class="source lang-java linenums">// GUI setting up using java
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+<span class="nc" id="L9">public class Mainframe extends JFrame {</span>
+<span class="nc" id="L10">    final private Font mainFont = new Font(&quot;Segoe print&quot;, Font.BOLD, 18);</span>
+    JTextField tfFirstName;
+    JTextField tfLastName;
+    JLabel labelWelcome;
+
+
+
+    public void initialize(){
+        /********************** Form Panel************************/
+<span class="nc" id="L19">        JLabel labelFirstName = new JLabel(&quot;FirstName&quot;);</span>
+<span class="nc" id="L20">        labelFirstName.setFont(mainFont);</span>
+
+<span class="nc" id="L22">        tfFirstName = new JTextField();</span>
+<span class="nc" id="L23">        tfFirstName.setFont(mainFont);</span>
+
+<span class="nc" id="L25">        JLabel labelLastName = new JLabel(&quot;Last Name&quot;);</span>
+<span class="nc" id="L26">        labelLastName.setFont(mainFont);</span>
+
+<span class="nc" id="L28">        tfLastName = new JTextField();</span>
+<span class="nc" id="L29">        tfLastName.setFont(mainFont);</span>
+
+<span class="nc" id="L31">        JPanel formPanel = new JPanel();</span>
+<span class="nc" id="L32">        formPanel.setLayout(new GridLayout(4, 1, 5, 5));</span>
+<span class="nc" id="L33">        formPanel.setOpaque(false);</span>
+<span class="nc" id="L34">        formPanel.add(labelFirstName);</span>
+<span class="nc" id="L35">        formPanel.add(tfFirstName);</span>
+<span class="nc" id="L36">        formPanel.add(labelLastName);</span>
+<span class="nc" id="L37">        formPanel.add(tfLastName);</span>
+
+
+        /***** Welcome Label ******/
+<span class="nc" id="L41">        labelWelcome = new JLabel();</span>
+<span class="nc" id="L42">        labelWelcome.setFont(mainFont);</span>
+
+<span class="nc" id="L44">        JButton btnOK = new JButton(&quot;OK&quot;);</span>
+<span class="nc" id="L45">        btnOK.setFont(mainFont);</span>
+<span class="nc" id="L46">        btnOK.addActionListener(new ActionListener() {</span>
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+<span class="nc" id="L51">                String firstName = tfFirstName.getText();</span>
+<span class="nc" id="L52">                String lastName = tfLastName.getText();</span>
+<span class="nc" id="L53">                labelWelcome.setText(&quot;Hello &quot; + firstName + &quot; &quot; + lastName);</span>
+<span class="nc" id="L54">                throw new UnsupportedOperationException(&quot;Unimplemented method 'actionPerformed'&quot;);</span>
+            }
+        });
+
+<span class="nc" id="L58">        JButton btnClear = new JButton(&quot;Clear&quot;);</span>
+<span class="nc" id="L59">        btnClear.setFont(mainFont);</span>
+<span class="nc" id="L60">        btnClear.addActionListener(new ActionListener() {</span>
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+         
+
+<span class="nc" id="L66">                tfFirstName.setText(&quot;&quot;);</span>
+<span class="nc" id="L67">                tfLastName.setText(&quot;&quot;);</span>
+<span class="nc" id="L68">                labelWelcome.setText(&quot;&quot;);</span>
+<span class="nc" id="L69">                throw new UnsupportedOperationException(&quot;Unimplemented method 'actionPerformed'&quot;);</span>
+            }
+            
+        });
+<span class="nc" id="L73">        JPanel buttonsPanel = new JPanel();</span>
+<span class="nc" id="L74">        buttonsPanel.setLayout(new GridLayout(1, 2, 5, 5));</span>
+<span class="nc" id="L75">        buttonsPanel.setOpaque(false);</span>
+<span class="nc" id="L76">        buttonsPanel.add(btnOK);</span>
+<span class="nc" id="L77">        buttonsPanel.add(btnClear);</span>
+
+
+<span class="nc" id="L80">        JPanel mainPanel = new JPanel();</span>
+<span class="nc" id="L81">        mainPanel.setLayout(new BorderLayout());</span>
+<span class="nc" id="L82">        mainPanel.setBackground(new Color(128, 128, 255));</span>
+<span class="nc" id="L83">        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+<span class="nc" id="L84">        mainPanel.add(formPanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L85">        mainPanel.add(labelWelcome,BorderLayout.CENTER);</span>
+<span class="nc" id="L86">        mainPanel.add(buttonsPanel,BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L88">        add(mainPanel);</span>
+
+
+<span class="nc" id="L91">        setTitle(&quot;Welcome&quot;);</span>
+<span class="nc" id="L92">        setSize(500, 500);</span>
+<span class="nc" id="L93">        setMinimumSize(new Dimension(300, 400));</span>
+<span class="nc" id="L94">        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L95">        setVisible(true);</span>
+<span class="nc" id="L96">    }</span>
+
+
+    
+    /** 
+     * @param args
+     */
+    public static void main(String[] args){
+<span class="nc" id="L104">        Mainframe myframe = new Mainframe();</span>
+<span class="nc" id="L105">        myframe.initialize();</span>
+<span class="nc" id="L106">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202306081254</span></div></body></html>
